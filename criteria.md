@@ -53,61 +53,58 @@ whether you hit them:
 
 ## 1.
 
-<!-- Your criterion. It must name a number. -->
+Overall accuracy is at least 0.65 on the held-out set.
 
-
-
-**Why this target:**
-
-
+**Why this target:** With 3 labels, random guessing gets about 33%. 0.65
+sits well above that floor without assuming a tiny fine-tuned model on ~200
+hand-labeled posts will be near-perfect — it's a number I'd call genuinely
+useful without being a guarantee.
 
 ---
 
 ## 2.
 
-<!-- Your criterion. -->
+`analysis` has an F1 of at least 0.55 on the held-out set.
 
-
-
-**Why this target:**
-
-
+**Why this target:** I expect `analysis` to be my smallest label once the
+200 posts are collected, so it'll have the fewest test examples and the
+jumpiest score. I set it looser than my other per-label target (0.65) for
+that reason, not because the label matters less.
 
 ---
 
 ## 3.
 
-<!-- Your criterion. -->
+`hot_take` and `ask` each have an F1 of at least 0.65 on the held-out set.
 
-
-
-**Why this target:**
-
-
+**Why this target:** These two labels should have more examples than
+`analysis`, so I'm holding them to the same bar as overall accuracy rather
+than giving them a cushion.
 
 ---
 
 ## 4.
 
-<!-- Your criterion. -->
+The largest label's count is no more than 2x the smallest label's count in
+my 200 labeled posts.
 
-
-
-**Why this target:**
-
-
+**Why this target:** With 3 labels and 200 posts, an even split is about 67
+each. Capping the largest at 2x the smallest still allows real skew (e.g.
+~100/~65/~35) without letting any one label get buried to the point it
+can't be learned from.
 
 ---
 
 ## 5.
 
-<!-- Your criterion. -->
+If someone else applied my label definitions to the same set of posts, they
+would agree with my label at least 80% of the time.
 
-
-
-**Why this target:**
-
-
+**Why this target:** My decision rule for the analysis/hot_take boundary
+(whether the post points to a specific, checkable detail from the film) is
+concrete enough that I'd expect most disagreements to come from genuinely
+ambiguous posts, not from the definitions being unclear. 80% leaves room for
+those edge cases without treating my taxonomy as unreliable.
 
 ---
 
