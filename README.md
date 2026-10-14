@@ -63,35 +63,62 @@ observed distinctions as the starting point for the label taxonomy.
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+### `analysis`
 
-**Definition:**
-
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
+**Definition:** Makes a claim about the film backed by a specific, checkable
+detail — a scene, a line, a shot, a fact.
 
 **Example 1:**
->
+> In "The Departed", I just noticed this one moment where Matt Damon's
+> character lets his mask slip... Billy asks what he's going to do about
+> "Costello's rat"... Sullivan responds by asking whether "Frank" ever
+> mentioned a name.
 
 **Example 2:**
->
+> The deer scene, the scene where Welby hands the orange juice to Dixon and
+> POINTS THE STRAW, all the letters of Willoughby... so many iconic and deeply
+> humanizing scenes in this movie.
+
+### `hot_take`
+
+**Definition:** States a verdict or opinion on a film with no specific detail
+offered to back it.
+
+**Example 1:**
+> The film is a classic with good performances from our 4 lead characters...
+> it's worth a watch. (The Haunting (1963) review — no scene cited.)
+
+**Example 2:**
+> I can't get into The Departed because how good Infernal Affairs was... just
+> can't shake how exact the ripoff was.
+
+### `ask`
+
+**Definition:** A genuine question or recommendation request, with no stated
+position of its own.
+
+**Example 1:**
+> Any good werewolf or chupacabra movie recommendations?
+
+**Example 2:**
+> Movie depicting the Appalachian Rust Belt... I'd be interested in watching
+> movies from around this same time period (60s-70s) that depict what life
+> was like in the area.
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `analysis` vs. `hot_take`
 
 **The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+If the post points to a specific scene, line, or detail in the film itself to
+justify its claim, it's `analysis` — even if the reasoning is personal or the
+tone is emotional. If the claim rests only on the poster's say-so with
+nothing specific to point at, it's `hot_take`.
 
-
+Borderline case: "19 years later, Superbad hits in a way I never expected" —
+personal and emotional (friend group drifted apart, like the movie), but it
+cites the actual ending scene (Seth and Evan, about to go their separate
+ways) as its evidence. Under the rule, that's `analysis`.
 
 ---
 
