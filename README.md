@@ -297,45 +297,48 @@ labeled myself with no AI involvement, as the milestone's honesty check
 <!-- Both models on the same posts. `python baseline.py --trained results.json`
      prints this table for you. -->
 
+*(Run on the 222-row dataset — see the Dataset Expansion note above. train
+154 · val 34 · test 34.)*
+
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy | 0.500 | 0.500 | +0.000 |
-| Macro F1 | 0.508 | 0.312 | -0.196 |
-| F1 — `analysis` | 0.400 | 0.308 | -0.092 |
-| F1 — `ask` | 0.625 | 0.629 | +0.004 |
-| F1 — `hot_take` | 0.500 | 0.000 | -0.500 |
+| Overall accuracy | 0.353 | 0.559 | +0.206 |
+| Macro F1 | 0.330 | 0.345 | +0.015 |
+| F1 — `analysis` | 0.467 | 0.681 | +0.214 |
+| F1 — `ask` | 0.250 | 0.353 | +0.103 |
+| F1 — `hot_take` | 0.273 | 0.000 | -0.273 |
 
-Both runs scored on the same 26-post `test_split.csv` written by the
+Both runs scored on the same 34-post `test_split.csv` written by the
 notebook, so this is a like-for-like comparison.
 
 **What I predicted before I looked:** I predicted the trained model would
-beat the baseline on `ask` (since that's my largest, best-represented label)
-but might lose ground on `analysis` and `hot_take`, my thinner labels with
-fewer training examples to learn from.
+beat the baseline on `ask` and `analysis` (my two largest, best-represented
+labels) but might lose ground on `hot_take`, my thinnest label with the
+fewest training examples to learn from.
 
-**What the gap actually means:** The baseline essentially tied or beat the
-trained model on every measure except a negligible gain on `ask`
-(+0.004). Macro F1 actually went *down* after fine-tuning (0.508 → 0.312),
-and `hot_take` F1 collapsed to 0.000 — the trained model predicts `ask` for
-almost every post (confirmed by the confusion matrix in `results.json`,
-where `analysis` and `hot_take` posts are nearly all misclassified as
-`ask`). With only 120 training rows and `hot_take` having just 18 of them,
-the model appears to have learned "guess the majority class" rather than
-the actual distinctions between labels. My prediction was directionally
-right (fine-tuning wouldn't clearly help the thin labels) but the result is
-more extreme than I expected: the baseline — a general model reading my
-plain-English definitions, with zero training — currently classifies this
-task better than my fine-tuned model does. That is itself the finding this
-milestone asks for: my fine-tuning added nothing, and on `hot_take` it
-actively made things worse.
+**What the gap actually means:** This prediction held up well on direction,
+if not on the overall picture I expected. The trained model beats the
+baseline on accuracy, macro F1, `analysis`, and `ask` — fine-tuning did add
+something real on the labels with enough examples. But `hot_take` collapses
+to F1 0.000, exactly as predicted, while the baseline (with zero training)
+still manages 0.273 on it. The confusion matrix confirms this isn't a
+borderline miss: the model predicts `analysis` for `hot_take` posts far more
+than the reverse. With `hot_take` sitting at only 28 of 222 rows (20 train,
+4 test), the model doesn't have enough examples to learn that boundary at
+all, even while it learns the other two labels reasonably well. The honest
+summary: fine-tuning helped overall, but it didn't touch my thinnest label —
+that's a dataset-size problem, not a hyperparameter problem.
 
 **Definitions vs. bare label names:** I also ran the baseline using no
 definitions (bare label names only) to measure what my definitions are
-worth. Accuracy dropped from 0.500 to 0.462, and macro F1 dropped from
-0.508 to 0.278 — my written definitions are worth about +0.23 macro F1 over
-just handing the model the three label names. `hot_take` in particular goes
-to F1 0.000 without the definition, meaning the model has no idea what
-"hot_take" means as a bare word but can work with my actual definition.
+worth. Here the result ran counter to what I'd expect: accuracy went from
+0.353 to 0.529, and macro F1 from 0.330 to 0.482 — the bare label names
+*outscored* my actual written definitions on this particular 34-post split.
+`hot_take` in particular does much better bare (0.571) than with my
+definition (0.273). I don't read this as "my definitions are bad" so much as
+evidence of how volatile a 34-post, 3-label zero-shot evaluation is — a
+handful of posts going either way swings these numbers a lot, which is the
+same instability the three-seed run below also surfaces independently.
 
 ---
 
@@ -344,31 +347,53 @@ to F1 0.000 without the definition, meaning the model has no idea what
 <!-- Five criteria across three seeds. The notebook's section 6 prints the
      spread table; the Target and Verdict columns are yours. -->
 
+Trained on the current `labels.csv` (222 rows, same dataset as the Baseline
+vs. Trained section above — see the Dataset Expansion note). Device: CPU,
+torch 2.2.2.
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.559 | 0.471 | 0.647 | 0.176 |
+| Macro F1 | 0.345 | 0.213 | 0.439 | 0.225 |
+| F1 — `analysis` | 0.681 | 0.640 | 0.744 | 0.104 |
+| F1 — `hot_take` | 0.000 | 0.000 | 0.000 | 0.000 |
+| F1 — `ask` | 0.353 | 0.000 | 0.571 | 0.571 |
+
+Accuracy moved 0.176 across seeds — more than 10 points. My dataset is too
+small or too lopsided for a stable measure at this label split. That's a
+genuine diagnosis, not a mistake: `hot_take` has only 28 of 222 rows, and its
+F1 is 0.000 on every single seed, not just unstable — the model never learns
+to predict it at all.
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy ≥ 0.65 | 0.65 | 0.559 | 0.471 | 0.647 | **MISSED** — closest at seed 2024 but still under on all three |
+| 2. `analysis` F1 ≥ 0.55 | 0.55 | 0.681 | 0.640 | 0.744 | **MET** — clears target on all three seeds |
+| 3. `hot_take` and `ask` F1 ≥ 0.65 each | 0.65 | hot_take 0.000 / ask 0.353 | hot_take 0.000 / ask 0.000 | hot_take 0.000 / ask 0.571 | **MISSED** — badly, especially `hot_take` |
+| 4. Largest label ≤ 2× smallest | 2× | — | — | — | **MISSED** — 106 `analysis` vs 28 `hot_take` = 3.8× in the current 222-row set |
+| 5. ≥80% agreement with a second labeler | 0.80 | — | — | — | Pending — Milestone 3's staff agreement check |
 
 ### Confusion matrix
 
 <!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
      An image of a matrix earns nothing. -->
 
-| true \ predicted |  |  |  |
+Confusion matrix from seed 42:
+
+| true \ predicted | analysis | hot_take | ask |
 |---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| **analysis** | 16 | 0 | 0 |
+| **hot_take** | 4 | 0 | 0 |
+| **ask** | 11 | 0 | 3 |
 
-**My biggest off-diagonal number, and what it means:**
-<!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
-     direction. "7 real analysis posts were called hot_take and only 3 went the
-     other way" is a direction, not just an error rate. -->
-
-
+**My biggest off-diagonal number, and what it means:** 11 real `ask` posts
+were called `analysis`, and 0 real `analysis` posts were called `ask` — a
+one-directional confusion, not a hard boundary the model is split on. The
+model never predicts `hot_take` or `ask` as often as it should; it collapses
+toward predicting `analysis` for almost everything. Combined with `hot_take`'s
+F1 of 0.000 on every seed, this points at my smallest label (`hot_take`, 28
+rows) not having enough examples for the model to learn it at all, and the
+model defaulting to my largest, best-represented label instead.
 
 ---
 
@@ -549,10 +574,15 @@ to exactly 200. Combined with the 22 cold-labeled rows, `labels.csv` now has
 No label exceeds 70%. `hot_take` remains the thinnest label, consistent with
 the original dataset.
 
-`results.json` and the Unit 5 README sections above still reflect the
-original 172-row training run and are left as submitted. A new training run
-against the expanded 222-row dataset, if needed, belongs in a future
-milestone rather than retroactively changing this unit's record.
+**Update, Unit 6:** starting with this unit's Milestone 1, `results.json`,
+`test_split.csv`, and every milestone from here on were re-run against the
+full 222-row `labels.csv` (train 154 · val 34 · test 34), replacing the
+172-row numbers the Unit 5 sections above were originally written against.
+The **Baseline vs. Trained**, **Run Log — Before**, and confusion matrix
+sections below reflect the 222-row run. The Unit 5 sections above this one
+(Label Taxonomy, The Dataset, The Training Run counts, etc.) are left as
+originally submitted and are not retroactively edited — this note is the
+record of the change.
 
 ---
 
