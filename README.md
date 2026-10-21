@@ -127,19 +127,31 @@ ways) as its evidence. Under the rule, that's `analysis`.
 <!-- Where you collected from, how you labelled, your counts, and three hard
      cases. -->
 
-**Where the posts came from:**
+**Where the posts came from:** r/movies, with a smaller number from r/TrueFilm
+(both public, general film-discussion communities, no login required).
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** I collected posts in batches, filtered out link-only
+posts (news links, posters, trailers with no original text), then had Claude
+pre-label each post against my `analysis`/`hot_take`/`ask` definitions as I
+went, which I reviewed and corrected (150 rows, marked `pre-labeled, checked`
+in `labels.csv`). Separately, I collected 22 more posts and labeled all of
+them myself first, with no AI help, using only my written definitions — those
+rows are marked `cold`.
+
+One thing worth noting: my cold-labeled batch skews noticeably more toward
+`hot_take` (6 of 22, ~27%) than the AI-assisted batch did (20 of 150, ~13%).
+Labeling alone, I was apparently more willing to call a post a bare opinion
+than I was while reviewing Claude's suggestions — worth keeping in mind when
+reading the agreement report next unit.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `analysis` | 71 | 41.3% |
+| `ask` | 75 | 43.6% |
+| `hot_take` | 26 | 15.1% |
+| **Total** | 172 | 100% |
 
 **Three hard cases**
 
@@ -147,21 +159,47 @@ Say so plainly — the disclosure is required, not penalised. -->
      been, and what you chose. These are worth more than the easy 190. -->
 
 **1.**
-> *The post:*
+> *The post:* "Ive been randomly watching zombie & world apocalypse movies
+> lately. Ive been searching for good ones & came across The Mist.. this was
+> really a good movie! The ending was sad as hell but a 10/10. This movie
+> reminds me of Stranger Things somewhat.. anyone know any similar movies?"
 >
-> *Could have been:*
+> *Could have been:* `hot_take` (the rating "10/10" is asserted with no
+> specific evidence) or `ask` (it closes by asking for similar recommendations).
 >
-> *I chose, because:*
+> *I chose, because:* the bulk of the post is an unevidenced verdict on the
+> film itself, not a request for information about something else — the
+> recommendation ask reads as a tacked-on afterthought, not the point of the
+> post. I labeled it `hot_take`.
 
 **2.**
-> *The post:*
+> *The post:* "Today/ tonight I watched 'of an age' ... the way the story is
+> and how every character, scene, picture and music is built up in every
+> moment really makes it up ... I honestly love this movie so much and it
+> might be one of my top movies this year."
 >
-> *Could have been:*
+> *Could have been:* `analysis` (it does gesture at specific elements —
+> "character, scene, picture and music") or `hot_take` (none of those
+> elements are actually described or tied to a concrete moment in the film).
 >
-> *I chose, because:*
+> *I chose, because:* my decision rule asks whether a post points to a
+> *specific* detail, not just names a *category* of detail. Naming "the
+> music" without describing a moment doesn't meet that bar. I labeled it
+> `hot_take`.
 
 **3.**
-> *The post:*
+> *The post:* "An utter gem of satire with a cast that could be described as
+> 'too good'. Jack Nicholson plays at least two major characters. Glenn
+> Close. Michael J Fox. Pierce Brosnan. ... I can not find a fault."
+>
+> *Could have been:* `hot_take` (the overall verdict — "I can not find a
+> fault" — is a pure, unargued claim) or `analysis` (it backs that verdict
+> with a specific, checkable cast list).
+>
+> *I chose, because:* the cast list is a concrete, checkable detail about the
+> film that supports the claim about casting quality, even though the
+> broader "no fault" verdict isn't separately argued. Per my rule, a specific
+> detail anywhere in the post is enough to qualify it as `analysis`.
 >
 > *Could have been:*
 >
