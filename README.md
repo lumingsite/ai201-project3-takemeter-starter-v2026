@@ -130,6 +130,14 @@ ways) as its evidence. Under the rule, that's `analysis`.
 **Where the posts came from:** r/movies, with a smaller number from r/TrueFilm
 (both public, general film-discussion communities, no login required).
 
+**Why 172, not 200:** Collecting was slower than expected because most posts
+in either subreddit are link-only shares (news, posters, trailers) with no
+original text to classify — on several passes fewer than half the posts in a
+scroll were usable. Rather than pad the count with weak examples just to hit
+200, I stopped at 172 once I had enough depth across all three labels and
+the hard cases to make real decisions on the boundary, per the milestone's
+stop rule.
+
 **How I labelled them:** I collected posts in batches, filtered out link-only
 posts (news links, posters, trailers with no original text), then had Claude
 pre-label each post against my `analysis`/`hot_take`/`ask` definitions as I
