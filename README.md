@@ -219,17 +219,31 @@ reading the agreement report next unit.
 
 <!-- Your starting model, your settings, and anything you changed and why. -->
 
-**Base model:**
+**Base model:** `distilbert-base-uncased`
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Settings:** 3 epochs, learning rate 2e-5, batch size 16, 128 max tokens,
+seed 42.
 
-**Anything I changed from the defaults, and why:**
+**Anything I changed from the defaults, and why:** Nothing — I ran the
+notebook's defaults as-is.
 
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
+**Device:** CPU (Intel Mac, no CUDA/MPS available), torch 2.2.2. Recorded in
+`results.json` per the milestone's note that hardware is part of what you
+found, not just a detail about the laptop.
 
+**Split sizes:** train 120 · val 26 · test 26 (from 172 total rows, 70/15/15).
 
+Per-label counts in the test split:
+
+| Label | Train | Val | Test |
+|---|---|---|---|
+| `analysis` | 49 | 11 | 11 |
+| `hot_take` | 18 | 4 | 4 |
+| `ask` | 53 | 11 | 11 |
+
+`hot_take` has only 4 examples in the test split — the notebook flagged this
+directly. A metric on 4 examples will move a lot between seeds, which is
+expected given `hot_take` is also my thinnest label overall (26/172).
 
 ---
 
@@ -244,17 +258,32 @@ of next unit's variance. -->
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Filter raw pasted Reddit feed text down to posts with
+  original writing (vs. link-only news/trailers/posters) and pre-label each
+  against my `analysis`/`hot_take`/`ask` definitions.
+- *What came back:* A labeled batch with a short reason per post (e.g. "cites
+  a specific scene" → `analysis`; "vague praise, no evidence" → `hot_take`).
+- *What I changed:* I kept most of the suggested labels but used them as a
+  starting point I was responsible for reviewing, not a final answer — this
+  is the `pre-labeled, checked` workflow disclosed below.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* In Milestone 2, generate 8 synthetic posts designed to
+  sit on the `analysis`/`hot_take` boundary, to stress-test my definitions
+  before collecting real data.
+- *What came back:* 8 short posts plus a classification of each under my
+  rule. All 8 classified cleanly, which told me the decision rule (does the
+  post cite a specific, checkable detail from the film?) didn't need
+  tightening before I started labeling for real.
+- *What I changed:* Nothing in the definitions — the stress test passed as
+  written.
 
-**Pre-labelling disclosure:**
+**Pre-labelling disclosure:** 150 of the 172 rows in `labels.csv` were
+pre-labeled by Claude against my written definitions, which I read and
+corrected as I went (marked `pre-labeled, checked`). The remaining 22 rows I
+labeled myself with no AI involvement, as the milestone's honesty check
+(marked `cold`).
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
