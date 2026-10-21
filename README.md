@@ -504,4 +504,33 @@ learned:**
 
 ---
 
+## Update — Dataset Expansion (after submission)
+
+This section is additive — nothing above it was changed or overwritten.
+
+After the Unit 5 submission (172 rows: 150 pre-labeled + 22 cold), I collected
+50 more posts from r/movies and r/TrueFilm and had them pre-labeled and
+reviewed the same way as the original batch, bringing the pre-labeled count
+to exactly 200. Combined with the 22 cold-labeled rows, `labels.csv` now has
+**222 total rows**.
+
+**Updated counts per label (all 222 rows):**
+
+| Label | Count | Share |
+|---|---|---|
+| `analysis` | 106 | 47.7% |
+| `ask` | 88 | 39.6% |
+| `hot_take` | 28 | 12.6% |
+| **Total** | 222 | 100% |
+
+No label exceeds 70%. `hot_take` remains the thinnest label, consistent with
+the original dataset.
+
+`results.json` and the Unit 5 README sections above still reflect the
+original 172-row training run and are left as submitted. A new training run
+against the expanded 222-row dataset, if needed, belongs in a future
+milestone rather than retroactively changing this unit's record.
+
+---
+
 📖 **How to run this project: [RUNNING.md](RUNNING.md)**
