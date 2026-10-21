@@ -42,16 +42,16 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
-My posts come from r/movies, the general film discussion subreddit. Reading
-30-40 posts there, I noticed the feed splits cleanly into link-only shares
-(a headline plus an external article, trailer, or image — no original
-writing) and original written posts (reviews, analysis, personal takes). Among
-the original posts, quality varies along a few lines I could actually point
-at in the text: whether the post cites specific scenes or evidence instead of
-asserting an opinion, whether it's long and structured versus a couple of
-unstructured sentences, and whether it argues a thesis versus just asking an
-open question with no take of its own. My classifier sorts posts using these
-observed distinctions as the starting point for the label taxonomy.
+My posts come from r/movies, the general film discussion subreddit, with a
+smaller number from r/TrueFilm for additional volume. Both are public film
+discussion communities with no login required. Reading the feed, I noticed it
+splits cleanly into link-only shares (a headline plus an external article,
+trailer, or image — no original writing) and original written posts (reviews,
+analysis, personal takes, questions). My classifier sorts the original
+written posts into three labels: `analysis` (a claim backed by a specific,
+checkable detail from the film), `hot_take` (a verdict or opinion with no
+such detail offered), and `ask` (a genuine question or recommendation
+request with no stated position of its own).
 
 ---
 
