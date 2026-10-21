@@ -299,20 +299,43 @@ labeled myself with no AI involvement, as the milestone's honesty check
 
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.500 | 0.500 | +0.000 |
+| Macro F1 | 0.508 | 0.312 | -0.196 |
+| F1 — `analysis` | 0.400 | 0.308 | -0.092 |
+| F1 — `ask` | 0.625 | 0.629 | +0.004 |
+| F1 — `hot_take` | 0.500 | 0.000 | -0.500 |
 
-**What I predicted before I looked:**
-<!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
-     prediction made afterwards isn't one. -->
+Both runs scored on the same 26-post `test_split.csv` written by the
+notebook, so this is a like-for-like comparison.
 
-**What the gap actually means:**
-<!-- If the baseline matched your trained model, your fine-tuning added
-     nothing — and that is a real finding, not a failure. Say it plainly. -->
+**What I predicted before I looked:** I predicted the trained model would
+beat the baseline on `ask` (since that's my largest, best-represented label)
+but might lose ground on `analysis` and `hot_take`, my thinner labels with
+fewer training examples to learn from.
 
+**What the gap actually means:** The baseline essentially tied or beat the
+trained model on every measure except a negligible gain on `ask`
+(+0.004). Macro F1 actually went *down* after fine-tuning (0.508 → 0.312),
+and `hot_take` F1 collapsed to 0.000 — the trained model predicts `ask` for
+almost every post (confirmed by the confusion matrix in `results.json`,
+where `analysis` and `hot_take` posts are nearly all misclassified as
+`ask`). With only 120 training rows and `hot_take` having just 18 of them,
+the model appears to have learned "guess the majority class" rather than
+the actual distinctions between labels. My prediction was directionally
+right (fine-tuning wouldn't clearly help the thin labels) but the result is
+more extreme than I expected: the baseline — a general model reading my
+plain-English definitions, with zero training — currently classifies this
+task better than my fine-tuned model does. That is itself the finding this
+milestone asks for: my fine-tuning added nothing, and on `hot_take` it
+actively made things worse.
 
+**Definitions vs. bare label names:** I also ran the baseline using no
+definitions (bare label names only) to measure what my definitions are
+worth. Accuracy dropped from 0.500 to 0.462, and macro F1 dropped from
+0.508 to 0.278 — my written definitions are worth about +0.23 macro F1 over
+just handing the model the three label names. `hot_take` in particular goes
+to F1 0.000 without the definition, meaning the model has no idea what
+"hot_take" means as a bare word but can work with my actual definition.
 
 ---
 
