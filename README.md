@@ -404,11 +404,11 @@ model defaulting to my largest, best-represented label instead.
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy | ≥ 0.65 | **MISSED** | Seeds 0.559, 0.471, 0.647 — none reach 0.65, and the target has to hold on all three, not just the best draw |
+| 2 | `analysis` F1 | ≥ 0.55 | **MET** | Seeds 0.681, 0.640, 0.744 — clears the target on all three seeds with room to spare |
+| 3 | `hot_take` and `ask` F1 each | ≥ 0.65 | **MISSED** | `hot_take` is 0.000 on all three seeds; `ask` is 0.353, 0.000, 0.571 — neither label clears 0.65 on any seed |
+| 4 | Balance (largest ≤ 2× smallest) | ≤ 2× | **MISSED** | 106 `analysis` vs 28 `hot_take` in the 222-row set = 3.8×, nearly double the cap |
+| 5 | ≥80% agreement with a second labeler | ≥ 0.80 | **MISSED** | Milestone 3's staff-set check: 21/30 = 70% |
 
 **Diagnoses**
 
@@ -421,7 +421,54 @@ model defaulting to my largest, best-represented label instead.
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
 
+**Criterion 5 (agreement, 70%) — a labeling-consistency problem, and the root
+cause of the others below.** Of my 9 disagreements with staff, 6 shared one
+exact pattern: on posts where a specific, checkable fact (a stat, a count, a
+named comparison) was followed by a confidently-worded closing sentence, I
+labeled the post by the *tone* of the closing sentence (`hot_take`) instead of
+checking whether the fact in front of it was load-bearing (`analysis`, per
+staff's Rule 1). That's not noise spread across many boundaries — it's one
+boundary, applied the same wrong way six times in a row. Cause: **a boundary I
+applied inconsistently**, and the agreement report is direct evidence of it,
+not an inference from the model's behavior.
 
+**Criterion 3 (`hot_take`/`ask` F1) — `hot_take` is two compounding causes,
+`ask` is one.** For `hot_take`: it has only 28 of 222 rows (20 train, 4 test),
+which is cause #1 (too few examples) on its own. But the Milestone 3 finding
+adds a second layer: if I apply the exact same analysis/hot_take boundary
+inconsistently on a blind staff-defined taxonomy, I almost certainly applied
+it inconsistently while building my own 222-row set too — meaning some
+fraction of my 28 `hot_take` rows may actually belong to `analysis` (or vice
+versa), making an already-small training signal noisier on top of being
+small. The confusion matrix supports this: 4 of 4 real `hot_take` test posts
+were predicted `analysis`, zero correct, zero predicted as anything else —
+the model never saw a clean enough signal to learn the label at all.
+
+For `ask`: the confusion matrix's single biggest off-diagonal is 11 real
+`ask` posts called `analysis` (0 going the other way) — a one-directional
+collapse toward `analysis`, not a two-way confusion. `ask` has a decent
+training count (88 rows), so this isn't primarily a too-few-examples problem.
+I read this as cause #4: **a task the model can't fully reach from 200
+examples** — distilbert-base-uncased fine-tuned for 3 epochs on ~154 training
+rows across 3 classes doesn't have enough signal to learn a confident,
+well-separated decision boundary for every pair, and it defaults toward my
+largest class (`analysis`, 106 rows) whenever it's unsure, which shows up as
+`ask` recall loss specifically.
+
+**Criterion 1 (overall accuracy) — a downstream consequence of the two
+diagnoses above, not a separate problem.** With `hot_take` contributing
+nothing (F1 0.000 on every seed) and `ask` losing a chunk of its recall to
+the same `analysis`-leaning collapse, overall accuracy is being pulled down
+by the same two causes already diagnosed, not a third independent issue.
+
+**Criterion 4 (balance, 3.8×) — a collection problem, not a labeling or model
+problem.** This one isn't about how I applied the boundary; it's that
+confident-opinion-with-zero-evidence posts (true `hot_take`) are genuinely
+rarer in r/movies and r/TrueFilm discussion than posts that either argue from
+a detail (`analysis`) or ask something (`ask`). I noted this as a real,
+measured finding back in Milestone 4 of the previous unit, and it held
+through the dataset expansion to 222 rows. The fix here is collection effort
+targeted at `hot_take`, not a labeling-consistency fix.
 
 ---
 
