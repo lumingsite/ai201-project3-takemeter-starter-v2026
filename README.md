@@ -279,6 +279,24 @@ expected given `hot_take` is also my thinnest label overall (26/172).
 - *What I changed:* Nothing in the definitions — the stress test passed as
   written.
 
+**Moment 3**
+
+- *What I asked for:* In Unit 6 Milestone 4, I gave Claude the "before" run's
+  confusion matrix (analysis/hot_take/ask) alongside Milestone 3's agreement
+  report and asked whether the two pieces of evidence pointed at the same
+  cause.
+- *What came back:* Claude noticed both pointed the same direction —
+  `hot_take` and `ask` posts drifting toward `analysis` in the confusion
+  matrix, and my own disagreements with staff concentrated on exactly the
+  analysis/hot_take boundary — and suggested the dominant cause was more
+  likely a labeling-consistency problem than pure sample size.
+- *What I changed:* I used that framing directly in my Milestone 4 diagnosis,
+  and it set my expectation for Milestone 5: that adding more `hot_take`
+  examples alone might not fix the F1, since the underlying problem might be
+  how I apply the boundary, not how many rows exist. That's exactly what the
+  "after" result confirmed — `hot_take` F1 stayed at 0.000 even after nearly
+  doubling its examples.
+
 **Pre-labelling disclosure:** 150 of the 172 rows in `labels.csv` were
 pre-labeled by Claude against my written definitions, which I read and
 corrected as I went (marked `pre-labeled, checked`). The remaining 22 rows I
@@ -735,11 +753,47 @@ same single change.
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
+**Criterion 1 (overall accuracy ≥ 0.65) — still missed, 0.512–0.535.** This
+is downstream of criterion 3; accuracy won't clear 0.65 until `hot_take` and
+`ask` stop collapsing into `analysis`. I'd need to fix that boundary first,
+not accuracy directly. I stopped because this milestone budgets one change,
+and I spent it testing the sample-size hypothesis for criterion 3 instead.
 
+**Criterion 3 (`hot_take`/`ask` F1 ≥ 0.65) — still missed, `hot_take` 0.000,
+`ask` 0.316–0.400.** What I'd do next: go back through my `analysis`/`hot_take`
+rows and relabel using the exact decision rule from Milestone 4's diagnosis
+(does the post's closing sentence carry the argument, or does a specific
+fact earlier in the post?), then retrain a third time. I stopped because
+that's a different, more labor-intensive fix than the one I already spent
+this unit's budget on (adding examples) — the Milestone 5 result is the
+evidence that this relabeling pass is the actual next step, not an optional
+one.
+
+**Criterion 4 (balance ≤ 2×) — still missed, but much closer: 2.16× (was
+3.8×).** I'd collect roughly 10–15 more `hot_take` posts to close the
+remaining gap. I stopped because this unit's time budget was spent on the
+one change above, and 2.16× already represents real progress from adding 30
+rows.
+
+**Criterion 5 (≥80% agreement) — still missed, 70%, unchanged.** I'd redo
+the staff agreement check after actually relabeling the analysis/hot_take
+boundary (criterion 3's fix), to see whether that specific fix raises
+consistency. I stopped because this milestone's change was adding examples,
+not relabeling, so a second agreement check wouldn't have measured anything
+different from Milestone 3's.
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
 <!-- Two sentences. Your confusion matrix is the evidence. -->
+
+I meant `hot_take` to capture confident, evidence-free opinion as a label
+genuinely distinct from `analysis`'s fact-backed claims, but the confusion
+matrix shows the model effectively learned a two-class system: 19 of 19
+`analysis` posts are called `analysis`, while 8 of 9 `hot_take` posts are
+also called `analysis` and the 9th is called `ask` — `hot_take` was never
+predicted even once. The boundary I most needed the model to learn is
+exactly the one Milestone 4's agreement check found I apply inconsistently
+myself, which is likely more of the explanation than sample size alone.
 
 
 
