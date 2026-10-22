@@ -433,7 +433,7 @@ model defaulting to my largest, best-represented label instead.
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 21 / 30 = 70%
 
 <!-- Nobody grades this number. A 60% who argues every disagreement from the
      stated rules beats a 95% who wrote "staff was right" nine times. Several
@@ -442,40 +442,175 @@ model defaulting to my largest, best-represented label instead.
 
 **Disagreements**
 
-<!-- Three lines each: the post, both labels, and who you think is right and
-     why — grounded in the staff definitions you were both applying.
-
-     Then sort each into one of three piles:
-       (a) the rule covered it and I applied it loosely → a consistency problem
-       (b) the rule genuinely doesn't say               → a gap in the definitions
-       (c) the rule is ambiguous here and my reading is defensible → argue it.
-           This is a legitimate win.
-
-     Pile (a) is the one that matters most for your diagnosis: if you applied a
-     written rule two different ways on 30 posts, that is direct evidence about
-     what you did across your own 200. -->
-
 **1.**
-> *The post:*
+> *The post:* "Pulled the splits from the last five editions. The winning
+> time has moved by 40 seconds total in ten years, but the 100th-place time
+> is four minutes faster. The depth changed, the front didn't."
 >
-> *Staff said / I said:*
+> *Staff said `analysis` / I said `hot_take`:*
 >
-> *My call, and why:*
+> *My call, and why:* Staff is right. The contrast between the two numbers
+> (40 seconds vs. four minutes) *is* the claim — remove the numbers and there
+> is no argument left, just "the depth changed." Rule 1 asks whether the
+> fact is load-bearing, and here it's the entire structure.
 >
-> *Which pile:*
+> *Which pile:* (a) — the rule already covers this, I applied it loosely by
+> reacting to the confident tone of the conclusion sentence instead of
+> checking whether the numbers in front of it were doing the work.
 
 **2.**
-> *The post:*
+> *The post:* "The club championship scoring changed in 2019 from top-6 to
+> top-10. Since then our B team has finished above the A team twice. That's
+> not depth improving, it's the scoring rewarding turnout."
 >
-> *Staff said / I said:*
+> *Staff said `analysis` / I said `hot_take`:*
 >
-> *My call, and why:*
+> *My call, and why:* Staff is right. Named date, named rule change, named
+> count ("twice") — all three are used specifically to rule out an
+> alternative explanation (depth improving). That's exactly what Rule 1
+> describes as a load-bearing fact.
 >
-> *Which pile:*
+> *Which pile:* (a) — same pattern as #1: I read the closing editorial line
+> ("that's not depth improving, it's...") as the whole post and under-weighted
+> the specific facts that preceded it.
 
-**What the pattern in my disagreements tells me:**
+**3.**
+> *The post:* "Everyone blames the hill at 18 miles. I split the field into
+> people who ran the first half under 1:45 and over, and the slowdown after
+> 18 was almost identical for both groups. If the hill were the problem the
+> fast starters would fall apart harder."
+>
+> *Staff said `analysis` / I said `reaction`:*
+>
+> *My call, and why:* Staff is right. Nothing here is about the writer's own
+> immediate experience or feeling — it's a structured comparison between two
+> groups, reporting a result, and drawing an inference from it. I mistook the
+> first-person "I split the field" for personal narration instead of noticing
+> it was describing an analysis, not a reaction.
+>
+> *Which pile:* (a) — Rule 2 (reaction vs. hot_take) and the `reaction`
+> definition itself are both specifically about the writer's own recent
+> experience; this post has none of that.
 
+**4.**
+> *The post:* "Carbon plates aren't the whole story. My times dropped 2% in
+> the shoes and another 2% the following year in the same pair, when the
+> only thing that changed was going from 35 to 50 miles a week."
+>
+> *Staff said `analysis` / I said `reaction`:*
+>
+> *My call, and why:* Staff is right, and staff flagged this one `HARD`
+> themselves. The opening clause reads like an opinion, but the two
+> comparable percentage figures tied to two different variables (shoes vs.
+> mileage) do the actual isolating work the claim depends on. Rule 1: the
+> fact carries it, even though the first sentence sounds like a take.
+>
+> *Which pile:* (a) — I stopped reading at the opinion-flavored opener and
+> didn't weigh the numbers that followed it.
 
+**5.**
+> *The post:* "Ran the same loop in 4C and in 24C within a fortnight, same
+> effort by heart rate. 90 seconds slower in the heat over six miles. People
+> keep saying heat costs you 'a bit' and it's more than that."
+>
+> *Staff said `analysis` / I said `hot_take`:*
+>
+> *My call, and why:* Staff is right. Same loop, same effort, controlled-ish
+> comparison, with a specific number (90 seconds over six miles) directly
+> supporting the conclusion. I over-weighted the closing editorial sentence
+> ("it's more than that") and under-weighted the measurement in front of it.
+>
+> *Which pile:* (a) — same pattern as #1/#2/#4: I'm consistently letting a
+> confident-sounding closing line override a load-bearing fact that precedes
+> it. That's a real pattern, not four unrelated misses.
+
+**6.**
+> *The post:* "Went back through the club results going back to 2012. Every
+> single year the number of people who enter the spring marathon and don't
+> start it sits between 18 and 23 percent. It's not a bad-luck year, it's the
+> base rate."
+>
+> *Staff said `analysis` / I said `hot_take`:*
+>
+> *My call, and why:* Staff is right. Named span (2012–present), specific
+> percentage range, used explicitly to argue against a specific alternative
+> explanation ("a bad-luck year"). That is precisely what Rule 1 means by a
+> load-bearing fact.
+>
+> *Which pile:* (a) — the fifth instance of the same pattern.
+
+**7.**
+> *The post:* "Three of us ran the same session on the same day, different
+> shoes, within 10 seconds of each other over 5 miles. I'm not saying shoes
+> do nothing, but whatever they do was smaller than the noise between three
+> people."
+>
+> *Staff said `analysis` / I said `reaction`:*
+>
+> *My call, and why:* I'm keeping `reaction`. Staff flagged this one `HARD`
+> too, and I think my reading is defensible rather than wrong: this is a
+> hedged, casual, first-person account of something three people did
+> together ("I'm not saying... but"), with an n of 3 and no real
+> measurement design — it reads much closer to an informal personal account
+> than to the more deliberate test-and-infer structure in posts like #3. The
+> number (10 seconds) is doing less argumentative work here than in the
+> clearer `analysis` cases above, because the hedge undercuts the conclusion
+> rather than the number supporting it.
+>
+> *Which pile:* (c) — the rule is genuinely ambiguous on how much hedging and
+> how small a sample can still count as a fact "carrying" an argument, and my
+> reading is defensible even if staff called it the other way.
+
+**8.**
+> *The post:* "If you need a gel before 90 minutes you have a fuelling
+> problem, not an energy problem."
+>
+> *Staff said `hot_take` / I said `reaction`:*
+>
+> *My call, and why:* Staff is right. There is nothing in this post that
+> ties it to something that "just happened" to the writer — no first-person
+> recent event, no feeling about an experience. It's a flat, confident,
+> general prescription with zero support. That's the textbook `hot_take`.
+>
+> *Which pile:* (a) — I think I pattern-matched on the imperative, slightly
+> personal-sounding phrasing ("you have a problem") rather than checking
+> whether the `reaction` definition's actual requirement (recent, first-person
+> experience) was present. It wasn't.
+
+**9.**
+> *The post:* "Every injury thread on this forum is the same injury and the
+> same three replies."
+>
+> *Staff said `hot_take` / I said `analysis`:*
+>
+> *My call, and why:* I'm keeping `analysis`. Staff flagged this one `HARD`
+> and their reasoning is that no count is actually given — the writer asserts
+> "every" without showing it. But the definitions don't require the *post*
+> to show its work with a number; `analysis` requires "a specific, checkable
+> fact" to exist and carry the claim, and "every injury thread" is itself a
+> specific, falsifiable claim about the content of a forum — it's checkable
+> in principle by anyone who goes and reads the threads, which is different
+> from an unfalsifiable opinion like "road racing peaked in 2015." The rule
+> doesn't explicitly say whether the checkable fact has to be *quantified in
+> the post itself* or merely *exist and be checkable*, and I don't think
+> that's spelled out anywhere in `staff_taxonomy.md`.
+>
+> *Which pile:* (b) — the rule genuinely doesn't say whether a specific,
+> verifiable-in-principle claim with no attached number counts as the kind
+> of "checkable fact" Rule 1 means, or whether it needs a number/date/quote
+> attached to qualify. That's a gap, not a misapplication on my part.
+
+**What the pattern in my disagreements tells me:** Six of my seven losses
+(#1, #2, #4, #5, #6, #8) share one pattern: I kept weighting the post's final,
+most confidently-worded sentence over the specific fact that preceded it,
+even when the fact was clearly what the conclusion depended on. That's a
+consistent labeling habit, not six unrelated mistakes — worth watching for
+in my own 222-row set, where the same thing could be happening between my
+`analysis` and `hot_take` labels. The two I'm keeping (#7, #9) are both posts
+staff themselves flagged `HARD`, and both involve a genuine gap in how
+explicit a definition has to get before a fact "counts" — a hedge-and-small-
+sample case, and a quantifier-with-no-number case. Those feel like legitimate
+defensible reads, not me being stubborn.
 
 ---
 
