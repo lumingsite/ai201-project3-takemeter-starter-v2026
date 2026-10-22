@@ -663,26 +663,71 @@ defensible reads, not me being stubborn.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** Added 30 more `hot_take` examples (28 → 58, roughly doubling
+the label), collected and labeled with the same care as the original batch
+(short, confident, no-evidence reactions — e.g. "Just watched X, loved it"
+with no specific detail). `labels.csv` went from 222 to 282 rows; `hot_take`'s
+share rose from 12.6% to 20.6%.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** Criterion 3 — `hot_take` F1 was 0.000 on
+every one of the three "before" seeds, and the confusion matrix showed all
+real `hot_take` test posts being predicted `analysis`. The most direct
+candidate cause from the four standard ones is **too few examples for a
+label**: 20 training rows for one of three classes is very little for a
+transformer fine-tune to learn from, independent of any labeling-consistency
+issue.
 
 ### Run Log — After
 
+*(Also run on the device recorded in `results_three_seeds_after.json`: CPU,
+torch 2.2.2. Same 282-row `labels.csv`, same three seeds.)*
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.512 | 0.512 | 0.535 | 0.023 |
+| Macro F1 | 0.324 | 0.326 | 0.356 | 0.032 |
+| F1 — `analysis` | 0.655 | 0.644 | 0.667 | 0.023 |
+| F1 — `hot_take` | 0.000 | 0.000 | 0.000 | 0.000 |
+| F1 — `ask` | 0.316 | 0.333 | 0.400 | 0.084 |
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy ≥ 0.65 | 0.65 | 0.512 | 0.512 | 0.535 | **MISSED** — further under target than before |
+| 2. `analysis` F1 ≥ 0.55 | 0.55 | 0.655 | 0.644 | 0.667 | **MET** — still clears on all three seeds |
+| 3. `hot_take` and `ask` F1 ≥ 0.65 each | 0.65 | hot_take 0.000 / ask 0.316 | hot_take 0.000 / ask 0.333 | hot_take 0.000 / ask 0.400 | **MISSED** — `hot_take` unchanged at 0.000 |
+| 4. Largest label ≤ 2× smallest | 2× | — | — | — | **MISSED, but closer** — 125 `analysis` vs 58 `hot_take` = 2.16× (was 3.8×) |
+| 5. ≥80% agreement with a second labeler | 0.80 | — | — | — | **MISSED** — 70% (unchanged; no new agreement check run this milestone) |
 
-**Did it help, and how do I know:**
+Confusion matrix (seed 42, after):
 
-<!-- If it didn't, say so. Relabelling that didn't help is a genuinely
-     interesting result and earns full credit. -->
+| true \ predicted | analysis | hot_take | ask |
+|---|---|---|---|
+| **analysis** | 19 | 0 | 0 |
+| **hot_take** | 8 | 0 | 1 |
+| **ask** | 12 | 0 | 3 |
 
+**Did it help, and how do I know:** Mostly no, on the thing I specifically
+targeted — and that's a real result, not a non-finding. `hot_take` F1 is
+exactly 0.000 on all three "after" seeds, identical to "before," even though
+I nearly doubled its training examples (20 → ~46 train rows) and its test
+split grew from 4 to 9. The confusion matrix shows the same one-directional
+collapse: `hot_take` posts are still predicted `analysis` almost every time.
+Doubling the example count did not touch the sample-size cause of the
+`hot_take` failure, which tells me the deeper problem is more likely the
+labeling-inconsistency cause Milestone 4 flagged (the analysis/hot_take
+boundary I apply inconsistently), or a genuinely hard boundary for this
+model at this scale — not just "needs more rows."
 
+The change did help on something I wasn't specifically targeting: **stability**.
+The accuracy spread across seeds dropped from 0.176 (unstable, "too small or
+lopsided for a stable measure") to 0.023 (the notebook's own threshold for
+"stable enough to trust"). Overall accuracy and macro F1 both came in
+slightly *lower* on average than before (0.512–0.535 vs 0.471–0.647), but far
+more consistently — a smaller, more reliable number beat a larger, noisier
+one. Balance also improved substantially (3.8× → 2.16×), even though it
+still misses the 2× cap. So: the diagnosed criterion stayed missed, but two
+other real problems (instability, lopsidedness) measurably improved from the
+same single change.
 
 ---
 
